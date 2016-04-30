@@ -3,6 +3,8 @@
 Input::Input()
 {
 	m_isRunning = true;
+	m_mouseDelta.x = 0;
+	m_mouseDelta.y = 0;
 
 	m_keys[SDLK_0] = false;
 	m_keys[SDLK_1] = false;
@@ -107,6 +109,10 @@ Input::Input()
 	m_keys[SDLK_x] = false;
 	m_keys[SDLK_y] = false;
 	m_keys[SDLK_z] = false;
+
+	m_mouseButtons[SDL_BUTTON_LEFT] = false;
+	m_mouseButtons[SDL_BUTTON_MIDDLE] = false;
+	m_mouseButtons[SDL_BUTTON_RIGHT] = false;
 }
 
 
@@ -118,6 +124,7 @@ Input::~Input()
 int Input::Poll()
 {
 	SDL_Event event;
+	Point lastMousePosition = m_mousePosition;
 	while (SDL_PollEvent(&event))
 	{
 		switch (event.type)
@@ -128,12 +135,26 @@ int Input::Poll()
 		case SDL_KEYUP:
 			m_keys[event.key.keysym.sym] = false;
 			break;
+		case SDL_MOUSEBUTTONDOWN:
+			m_mouseButtons[event.button.button] = true;
+			break;
+		case SDL_MOUSEBUTTONUP:
+			m_mouseButtons[event.button.button] = false;
+			break;
+		case SDL_MOUSEMOTION:
+			m_mousePosition.x = event.motion.x;
+			m_mousePosition.y = event.motion.y;
+			break;
 		case SDL_QUIT:
 			m_isRunning = false;
 		default:
 			break;
 		}
 	}
+
+	m_mouseDelta.x = lastMousePosition.x - m_mousePosition.x;
+	m_mouseDelta.y = lastMousePosition.y - m_mousePosition.y;
+
 	return 0;
 }
 
@@ -145,4 +166,19 @@ bool Input::IsRunning()
 bool Input::IsKeyPressed(Uint32 key)
 {
 	return m_keys[key];
+}
+
+bool Input::IsButtonPressed(Uint8 button)
+{
+	return m_mouseButtons[button];
+}
+
+Point Input::GetMousePosition()
+{
+	return m_mousePosition;
+}
+
+Point Input::GetMouseDelta()
+{
+	return m_mouseDelta;
 }

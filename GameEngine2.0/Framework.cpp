@@ -32,6 +32,14 @@ void Framework::MainLoop()
 		{
 			std::cout << "S key pressed" << std::endl;
 		}
+		Point mousePosition = m_input.GetMousePosition();
+		Point mouseDelta = m_input.GetMouseDelta();
+
+		if (mouseDelta.x != 0 || mouseDelta.y != 0)
+		{
+			std::cout << "Mouse position: " << mousePosition.x << "," << mousePosition.y << std::endl;
+		}
+
 		m_renderer.Update(0);
 	}
 }
