@@ -13,8 +13,7 @@ class Input
 public:
 	Input();
 	~Input();
-	int Poll();
-	bool IsRunning();
+	bool Poll();
 	bool IsKeyPressed(Uint32 key);
 	bool IsButtonPressed(Uint8 button);
 	Point GetMousePosition();
@@ -24,6 +23,5 @@ private:
 	std::unordered_map<Uint8, bool> m_mouseButtons;
 	Point m_mousePosition;
 	Point m_mouseDelta;
-	bool m_isRunning;
 };
 

@@ -2,7 +2,6 @@
 
 Input::Input()
 {
-	m_isRunning = true;
 	m_mouseDelta.x = 0;
 	m_mouseDelta.y = 0;
 
@@ -121,7 +120,7 @@ Input::~Input()
 }
 
 
-int Input::Poll()
+bool Input::Poll()
 {
 	SDL_Event event;
 	Point lastMousePosition = m_mousePosition;
@@ -146,7 +145,7 @@ int Input::Poll()
 			m_mousePosition.y = event.motion.y;
 			break;
 		case SDL_QUIT:
-			m_isRunning = false;
+			return false;
 		default:
 			break;
 		}
@@ -155,12 +154,7 @@ int Input::Poll()
 	m_mouseDelta.x = lastMousePosition.x - m_mousePosition.x;
 	m_mouseDelta.y = lastMousePosition.y - m_mousePosition.y;
 
-	return 0;
-}
-
-bool Input::IsRunning()
-{
-	return m_isRunning;
+	return true;
 }
 
 bool Input::IsKeyPressed(Uint32 key)

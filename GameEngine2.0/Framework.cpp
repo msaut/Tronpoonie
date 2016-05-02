@@ -1,5 +1,6 @@
 #include "Framework.h"
 #include <iostream>
+#include "Timer.h"
 
 Framework::Framework(FrameworkInitializationParams& params)
 	:m_input(), 
@@ -21,25 +22,17 @@ int Framework::Init(int width, int height)
 
 void Framework::MainLoop()
 {
-	while (m_input.IsRunning())
+	Timer timer;
+	timer.Start();
+	timer.SetTimer(1.0, &PrintFrameCount);
+	while (m_input.Poll())
 	{
-		m_input.Poll();
-		if (m_input.IsKeyPressed(SDLK_w))
-		{
-			std::cout << "W key pressed" << std::endl;
-		}
-		if (m_input.IsKeyPressed(SDLK_s))
-		{
-			std::cout << "S key pressed" << std::endl;
-		}
-		Point mousePosition = m_input.GetMousePosition();
-		Point mouseDelta = m_input.GetMouseDelta();
-
-		if (mouseDelta.x != 0 || mouseDelta.y != 0)
-		{
-			std::cout << "Mouse position: " << mousePosition.x << "," << mousePosition.y << std::endl;
-		}
-
-		m_renderer.Update(0);
+		double dt = timer.Tick();
+		m_renderer.Update(dt);
 	}
+}
+
+void Framework::PrintFrameCount(int frameCount)
+{
+	std::cout << " FPS: " << frameCount << std::endl;
 }

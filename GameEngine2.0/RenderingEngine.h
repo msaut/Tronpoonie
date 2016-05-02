@@ -1,7 +1,10 @@
 #pragma once
 #include "Display.h"
+
+
 class RenderingEngine
 {
+
 public:
 	RenderingEngine(int width, int height);
 	~RenderingEngine();

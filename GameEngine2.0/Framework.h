@@ -17,8 +17,10 @@ public:
 	// Initialize SDL, and GL
 	int Init(int width, int height);
 	void MainLoop();
+	
 private:
 	RenderingEngine m_renderer;
 	Input m_input;
+	static void PrintFrameCount(int frameCount);
 };
 
